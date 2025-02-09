@@ -1,0 +1,106 @@
+
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Task</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">  <!-- Ensure static file loading -->
+</head>
+<style>
+    /* Same styles as in your main.html */
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f0f2f5; /* Soft background color */
+        color: #333; /* Dark text color for contrast */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Full height */
+    }
+
+    .container {
+        background-color: #ffffff; /* White background for the container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        width: 400px;
+        text-align: center;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #007bff; /* Blue color for the heading */
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px; /* Space between form and task list */
+    }
+
+    input[type="text"] {
+        width: 100%;  /* Full width input field */
+        padding: 10px;
+        border: 1px solid #ddd; /* Light border for the input */
+        border-radius: 5px;
+        margin-bottom: 10px; /* Space between input and button */
+        font-size: 16px;
+        transition: border-color 0.3s; /* Smooth transition for focus */
+    }
+
+    input[type="text"]:focus {
+        border-color: #007bff; /* Border color on focus */
+        outline: none; /* Remove default outline */
+    }
+
+    .btn {
+        background-color: #007bff; /* Blue background for buttons */
+        color: white; /* White text color */
+        border: none;
+        border-radius: 5px;
+        padding: 10px 15px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s; /* Smooth transition for hover */
+    }
+
+    .btn:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+    }
+
+    a.btn {
+        display: inline-block;
+        margin-top: 10px;
+        background-color: #6c757d; /* Grey background for the cancel button */
+        text-decoration: none;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+    }
+
+    a.btn:hover {
+        background-color: #5a6268; /* Darker grey on hover */
+    }
+</style>
+<body>
+    <div class="container">
+        <h2>Edit Task</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <input type="text" name="title" value="{{ task.title }}" required>  <!-- Pre-fill the task title -->
+            <button type="submit" class="btn">Update Task</button>
+        </form>
+        <a href="{% url 'main' %}" class="btn">Cancel</a>  <!-- Link to cancel editing -->
+    </div>
+</body>
+</html>

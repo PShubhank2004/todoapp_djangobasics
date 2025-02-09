@@ -1,0 +1,179 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">  <!-- Ensure static file loading -->
+</head>
+<style>
+    /* Reset some default browser styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f2f5; /* Soft background color */
+    color: #333; /* Dark text color for contrast */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full height */
+}
+p {
+    font-size: 18px; /* Font size for the greeting text */
+    color: #555; /* Darker grey for better visibility */
+    margin-bottom: 20px; /* Spacing below the greeting */
+}
+
+.container {
+    background-color: #ffffff; /* White background for the container */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: 400px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+    color: #007bff; /* Blue color for the heading */
+}
+
+form {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Space between form and task list */
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd; /* Light border for the input */
+    border-radius: 5px;
+    margin-right: 10px; /* Space between input and button */
+    font-size: 16px;
+    transition: border-color 0.3s; /* Smooth transition for focus */
+}
+
+input[type="text"]:focus {
+    border-color: #007bff; /* Border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.btn {
+    background-color: #007bff; /* Blue background for buttons */
+    color: white; /* White text color */
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+.btn:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+ul {
+    list-style-type: none; /* Remove default list styling */
+    padding: 0;
+}
+
+li {
+    background-color: #f9f9f9; /* Light gray background for tasks */
+    margin: 10px 0; /* Margin between tasks */
+    padding: 10px;
+    border-radius: 5px; /* Rounded corners */
+    display: flex;
+    justify-content: space-between; /* Space between title and delete button */
+    align-items: center; /* Center align items */
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+li:hover {
+    background-color: #e9ecef; /* Slightly darker on hover */
+}
+
+li .delete-btn {
+    background-color: #ff4d4d; /* Red background for delete button */
+    border: none;
+    color: white; /* White text for delete button */
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+li .delete-btn:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+li .edit-btn {
+    background-color: #ff4d4d; /* Red background for delete button */
+    border: none;
+    color: white; /* White text for delete button */
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Smooth transition for hover */
+}
+
+li .edit-btn:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+
+a.btn {
+    margin-top: 20px; /* Space above logout button */
+    display: inline-block; /* Make the logout button behave like a block */
+}
+
+
+
+</style>
+<body>
+     <!-- Display the user's username -->
+     
+    <div class="container">
+        <h1>Hello, {{ user.username }}</h1>
+        <h1>your To-Do List</h1>
+        <form id="task-form" action="{% url 'main' %}" method="POST">  <!-- Ensure this is correct -->
+            {% csrf_token %}
+            <input type="text" name="title" id="task-input" placeholder="Add a new task..." required>
+            <button type="submit" class="btn">Add</button>
+        </form>
+        
+        <!-- In your main.html file, update the edit link as follows -->
+    <ul id="task-list">
+        {% for todo in res %}  <!-- Iterate over the tasks -->
+        <li>
+            <p>{{ todo.title }}</p>  <!-- Display task title -->
+            <form action="{% url 'delete-task' todo.pk %}" method="POST" style="display:inline;">  
+                {% csrf_token %}
+                <button type="submit" class="delete-btn">Delete</button>
+            </form>
+
+            <form action="{% url 'edit-task' todo.pk %}" method="POST" style="display:inline;">  
+                {% csrf_token %}
+                <button type="submit" class="edit-btn">Edit</button>
+            </form>   
+        </li>
+        {% empty %}
+          <li>No tasks added yet.</li>  <!-- Message if no tasks -->
+        {% endfor %}
+    </ul>     
+        <a href="{% url 'logout' %}" class="btn">Logout</a>
+    </div>
+
+</body>
+</html>
+
+
+
+
+
